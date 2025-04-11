@@ -1,14 +1,13 @@
-import { Router, Request, Response } from 'express'
+import { Router } from 'express'
 import UsuarioController from '../controllers/UsuarioController'
+import { ensureAuth } from '../middlewares/ensureAuth'
 
 const usuarioRoutes = Router()
 
-usuarioRoutes.post('/register', async (req: Request, res: Response) => {
-    await UsuarioController.register(req, res)
-})
+usuarioRoutes.post('/register', UsuarioController.register)
+usuarioRoutes.post('/login', UsuarioController.login)
+usuarioRoutes.post('/logout', ensureAuth, UsuarioController.logout)
 
-usuarioRoutes.post('/login', async (req: Request, res: Response) => {
-    await UsuarioController.login(req, res)
-})
+usuarioRoutes.get('/protected-route', ensureAuth, UsuarioController.protectedRoute)
 
 export { usuarioRoutes }

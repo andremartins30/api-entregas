@@ -16,12 +16,15 @@ export const UsuarioService = {
         if (!user) throw new Error('Usuário não encontrado')
 
         const passwordValida = await bcrypt.compare(password, user.password)
-        if (!passwordValida) throw new Error('password inválida')
+        if (!passwordValida) throw new Error('Senha inválida')
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
-            expiresIn: '7d',
+            expiresIn: '1h'
         })
 
         return { token, user: { id: user.id, nome: user.nome, email: user.email } }
     },
+
 }
+
+export default UsuarioService

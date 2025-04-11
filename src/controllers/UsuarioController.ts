@@ -2,27 +2,41 @@ import { Request, Response } from 'express'
 import { UsuarioService } from '../services/UsuarioService'
 
 export const UsuarioController = {
-    async register(req: Request, res: Response) {
+    async register(req: Request, res: Response): Promise<void> {
         const { nome, email, password } = req.body
 
         try {
             const usuario = await UsuarioService.register(nome, email, password)
-            return res.status(201).json(usuario)
+            res.status(201).json(usuario)
         } catch (error: any) {
-            return res.status(400).json({ error: error.message })
+            res.status(400).json({ error: error.message })
         }
     },
 
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response): Promise<void> {
         const { email, password } = req.body
 
         try {
             const result = await UsuarioService.login(email, password)
-            return res.json(result)
+            res.json(result)
         } catch (error: any) {
-            return res.status(400).json({ error: error.message })
+            res.status(400).json({ error: error.message })
         }
     },
+
+    async logout(req: Request, res: Response): Promise<void> {
+        const userId = (req as any).user.id; // Pega o ID do usuário do token decodificado
+
+        res.status(200).json({
+            message: 'Logout realizado com sucesso',
+            userId: userId,
+            tokenExpired: true
+        })
+    },
+
+    async protectedRoute(req: Request, res: Response): Promise<void> {
+        res.status(200).json({ message: 'Rota protegida acessada com sucesso' })
+    }
 }
 
 export default UsuarioController

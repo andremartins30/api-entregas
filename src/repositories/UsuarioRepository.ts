@@ -14,3 +14,5 @@ export const UsuarioRepository = {
     findById: (id: number) =>
         prisma.usuario.findUnique({ where: { id } }),
 }
+
+export default UsuarioRepository
