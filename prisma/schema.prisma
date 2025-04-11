@@ -17,7 +17,7 @@ model Usuario {
   id        Int     @id @default(autoincrement())
   nome      String
   email     String  @unique
-  password     String
+  password  String  @unique
   entregas  Entrega[]
 }
 
@@ -28,4 +28,5 @@ model Entrega {
   usuarioId   Int
   usuario     Usuario  @relation(fields: [usuarioId], references: [id])
   criadaEm    DateTime @default(now())
+  atualizadaEm DateTime @default(now())
 }
