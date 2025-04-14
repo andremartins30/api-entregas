@@ -14,19 +14,19 @@ datasource db {
 }
 
 model Usuario {
-  id        Int     @id @default(autoincrement())
-  nome      String
-  email     String  @unique
-  password  String  @unique
-  entregas  Entrega[]
+  id       Int       @id @default(autoincrement())
+  nome     String
+  email    String    @unique
+  password String    @unique
+  entregas Entrega[]
 }
 
 model Entrega {
-  id          Int      @id @default(autoincrement())
-  destino     String
-  status      String
-  usuarioId   Int
-  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
-  criadaEm    DateTime @default(now())
-  atualizadaEm DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  destino      String
+  status       String
+  usuarioId    Int
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id])
+  criadaEm     DateTime @default(now())
+  atualizadaEm DateTime @updatedAt
 }

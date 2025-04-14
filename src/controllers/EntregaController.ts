@@ -36,11 +36,28 @@ const EntregaController = {
         }
     },
 
+    async updateStatusDelivery(req: Request, res: Response): Promise<void> {
+        try {
+            const id = req.params.id
+            const { status } = req.body
+
+            const statusEntrega = await EntregaService.updateStatusDelivery(Number(id), status)
+            console.log(statusEntrega)
+            res.status(200).json(statusEntrega)
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao atualizar entrega' })
+        }
+    },
+
     async readDelivery(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params
             const entregas = await EntregaService.readDelivery(id ? Number(id) : undefined)
             res.status(200).json(entregas)
+            if (!entregas) {
+                res.status(404).json({ error: 'Entrega não encontrada' });
+            }
+
         } catch (error) {
             res.status(500).json({ error: 'Erro ao buscar entregas' })
         }

@@ -23,6 +23,15 @@ export const EntregaService = {
         })
     },
 
+    async updateStatusDelivery(id: number, status: string) {
+        return await prisma.entrega.update({
+            where: { id },
+            data: {
+                status
+            }
+        })
+    },
+
     async readDelivery(id?: number) {
         if (id) {
             return await prisma.entrega.findUnique({

@@ -8,5 +8,6 @@ entregaRoutes.post('/delivery', ensureAuth, EntregaController.createDelivery.bin
 entregaRoutes.put('/delivery/:id', ensureAuth, EntregaController.updateDelivery.bind(EntregaController))
 entregaRoutes.get('/delivery', ensureAuth, EntregaController.readDelivery.bind(EntregaController))
 entregaRoutes.get('/delivery/:id', ensureAuth, EntregaController.readDelivery.bind(EntregaController))
+entregaRoutes.put('/delivery/status/:id', ensureAuth, EntregaController.updateStatusDelivery.bind(EntregaController))
 
 export { entregaRoutes }
