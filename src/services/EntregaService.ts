@@ -56,6 +56,36 @@ export const EntregaService = {
                 }
             }
         })
+    },
+
+    async countDelivery() {
+        return await prisma.entrega.count()
+    },
+
+
+    async countDeliveryByStatus(status: string) {
+        return await prisma.entrega.count({
+            where: {
+                status
+            }
+        })
+    },
+
+    async getDeliveryCounts() {
+        const [total, pendente, emTransito, entregue] = await Promise.all([
+            this.countDelivery(),
+            this.countDeliveryByStatus('PENDENTE'),
+            this.countDeliveryByStatus('EM_TRANSITO'),
+            this.countDeliveryByStatus('ENTREGUE')
+        ]);
+
+        return {
+            total,
+            pendente,
+            emTransito,
+            entregue
+        }
+
     }
 }
 

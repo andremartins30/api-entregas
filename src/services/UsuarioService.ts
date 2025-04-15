@@ -25,6 +25,10 @@ export const UsuarioService = {
         return { token, user: { id: user.id, nome: user.nome, email: user.email } }
     },
 
+    async getUserById(id: string) {
+        return UsuarioRepository.findById(parseInt(id))
+    }
+
 }
 
 export default UsuarioService

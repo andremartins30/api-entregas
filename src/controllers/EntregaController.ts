@@ -38,14 +38,12 @@ const EntregaController = {
 
     async updateStatusDelivery(req: Request, res: Response): Promise<void> {
         try {
-            const id = req.params.id
+            const { id } = req.params
             const { status } = req.body
-
-            const statusEntrega = await EntregaService.updateStatusDelivery(Number(id), status)
-            console.log(statusEntrega)
-            res.status(200).json(statusEntrega)
-        } catch (error) {
-            res.status(500).json({ error: 'Erro ao atualizar entrega' })
+            const delivery = await EntregaService.updateStatusDelivery(parseInt(id), status)
+            res.json(delivery)
+        } catch (error: any) {
+            res.status(400).json({ error: error.message })
         }
     },
 
@@ -60,6 +58,15 @@ const EntregaController = {
 
         } catch (error) {
             res.status(500).json({ error: 'Erro ao buscar entregas' })
+        }
+    },
+
+    async countDelivery(req: Request, res: Response): Promise<void> {
+        try {
+            const counts = await EntregaService.getDeliveryCounts()
+            res.status(200).json(counts)
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao contar entregas' })
         }
     }
 }

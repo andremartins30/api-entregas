@@ -36,6 +36,20 @@ export const UsuarioController = {
 
     async protectedRoute(req: Request, res: Response): Promise<void> {
         res.status(200).json({ message: 'Rota protegida acessada com sucesso' })
+    },
+
+    async getCurrentUser(req: Request, res: Response): Promise<void> {
+        const userId = (req as any).user.id;
+        const user = await UsuarioService.getUserById(userId);
+
+        if (!user) {
+            res.status(404).json({ error: 'Usuário não encontrado' });
+            return;
+        }
+
+        // Retorna apenas os dados necessários, excluindo a senha
+        const { id, nome, email } = user;
+        res.status(200).json({ user: { id, nome, email } });
     }
 }
 

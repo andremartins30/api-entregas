@@ -19,6 +19,7 @@ model Usuario {
   email    String    @unique
   password String    @unique
   entregas Entrega[]
+  veiculos Veiculo[]
 }
 
 model Entrega {
@@ -29,4 +30,12 @@ model Entrega {
   usuario      Usuario  @relation(fields: [usuarioId], references: [id])
   criadaEm     DateTime @default(now())
   atualizadaEm DateTime @updatedAt
+}
+
+model Veiculo {
+  id        Int     @id @default(autoincrement())
+  placa     String  @unique
+  modelo    String
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
 }
