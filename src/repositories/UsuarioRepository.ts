@@ -6,7 +6,7 @@ export const UsuarioRepository = {
     findByEmail: (email: string) =>
         prisma.usuario.findUnique({ where: { email } }),
 
-    create: (nome: string, email: string, password: string) =>
+    create: (nome: string, email: string, password: string, role: string) =>
         prisma.usuario.create({
             data: { nome, email, password },
         }),

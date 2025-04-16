@@ -3,11 +3,16 @@ import { UsuarioService } from '../services/UsuarioService'
 
 export const UsuarioController = {
     async register(req: Request, res: Response): Promise<void> {
-        const { nome, email, password } = req.body
+        const { nome, email, password, role } = req.body
 
         try {
-            const usuario = await UsuarioService.register(nome, email, password)
-            res.status(201).json(usuario)
+            const usuario = await UsuarioService.register(nome, email, password, role)
+            res.status(201).json({
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email,
+                role: usuario.role
+            });
         } catch (error: any) {
             res.status(400).json({ error: error.message })
         }
