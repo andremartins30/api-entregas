@@ -79,7 +79,6 @@ export class OpenRouteService {
 
             const address = response.data.address;
 
-            console.log('Endereço via Nominatim:', address);
 
             const rua = address.road || address.street || '';
             const numero = address.house_number || '';
@@ -90,7 +89,6 @@ export class OpenRouteService {
 
             const nomeLocal = [rua, numero, bairro, cidade, siglaEstado].filter(Boolean).join(', ');
 
-            console.log('Endereço via Nominatim:', nomeLocal);
 
             return {
                 address: nomeLocal,
