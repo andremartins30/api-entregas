@@ -14,12 +14,18 @@ datasource db {
 }
 
 model Usuario {
-  id       Int       @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   nome     String
-  email    String    @unique
+  email    String @unique
   password String
-  role     Role      @default(ENTREGADOR)
-  entregas Entrega[]
+  role     Role   @default(ENTREGADOR)
+
+  // Entregas criadas por ele (ex: gestor)
+  entregasCriadas Entrega[] @relation("CriadorEntrega")
+
+  // Entregas atribuídas a ele (caso seja entregador)
+  entregas Entrega[] @relation("EntregadorEntrega")
+
   veiculos Veiculo[]
 }
 
@@ -29,11 +35,15 @@ enum Role {
 }
 
 model Entrega {
-  id           Int      @id @default(autoincrement())
-  destino      String
-  status       String
-  usuarioId    Int
-  usuario      Usuario  @relation(fields: [usuarioId], references: [id])
+  id        Int     @id @default(autoincrement())
+  destino   String
+  status    String
+  usuarioId Int // quem criou
+  usuario   Usuario @relation("CriadorEntrega", fields: [usuarioId], references: [id])
+
+  entregadorId Int? // quem vai entregar
+  entregador   Usuario? @relation("EntregadorEntrega", fields: [entregadorId], references: [id])
+
   criadaEm     DateTime @default(now())
   atualizadaEm DateTime @updatedAt
 }

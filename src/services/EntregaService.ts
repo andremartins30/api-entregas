@@ -42,6 +42,12 @@ export const EntregaService = {
                             id: true,
                             nome: true,
                         }
+                    },
+                    entregador: {
+                        select: {
+                            id: true,
+                            nome: true,
+                        }
                     }
                 }
             })
@@ -49,6 +55,12 @@ export const EntregaService = {
         return await prisma.entrega.findMany({
             include: {
                 usuario: {
+                    select: {
+                        id: true,
+                        nome: true,
+                    }
+                },
+                entregador: {
                     select: {
                         id: true,
                         nome: true,
@@ -86,6 +98,71 @@ export const EntregaService = {
             entregue
         }
 
+    },
+
+
+    async setEntregador(entregaId: number, entregadorId: number) {
+        // First check if the entrega exists
+        const entrega = await prisma.entrega.findUnique({
+            where: { id: entregaId }
+        })
+
+        if (!entrega) {
+            throw new Error('Entrega não encontrada')
+        }
+
+        // Then check if the entregador exists and is actually an ENTREGADOR
+        const entregador = await prisma.usuario.findFirst({
+            where: {
+                id: entregadorId,
+                role: 'ENTREGADOR'
+            }
+        })
+
+        if (!entregador) {
+            throw new Error('Entregador não encontrado ou usuário não é um entregador')
+        }
+
+        // If both exist, proceed with the update
+        return await prisma.entrega.update({
+            where: { id: entregaId },
+            data: {
+                entregadorId,
+                status: 'EM_TRANSITO' // Optionally update status when assigning
+            },
+            include: {
+                entregador: {
+                    select: {
+                        id: true,
+                        nome: true
+                    }
+                }
+            }
+        })
+    },
+
+    async readEntregasDoEntregador(entregadorId: number) {
+        return await prisma.entrega.findMany({
+            where: {
+                entregadorId: entregadorId // Filtra apenas entregas onde entregadorId é igual ao ID do usuário logado
+            },
+            select: {
+                id: true,
+                destino: true,
+                status: true,
+                criadaEm: true,
+                atualizadaEm: true,
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true
+                    }
+                }
+            },
+            orderBy: {
+                criadaEm: 'desc'
+            }
+        })
     }
 }
 

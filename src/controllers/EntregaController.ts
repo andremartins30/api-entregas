@@ -68,6 +68,56 @@ const EntregaController = {
         } catch (error) {
             res.status(500).json({ error: 'Erro ao contar entregas' })
         }
+    },
+
+
+    async atribuirEntregador(req: Request, res: Response): Promise<void> {
+        try {
+            const { entregaId, entregadorId } = req.body
+
+            if (!entregaId || !entregadorId) {
+                res.status(400).json({ error: 'Entrega e Entregador são obrigatórios' })
+                return
+            }
+
+            const entregaIdNumber = Number(entregaId)
+            const entregadorIdNumber = Number(entregadorId)
+
+            if (isNaN(entregaIdNumber) || isNaN(entregadorIdNumber)) {
+                res.status(400).json({ error: 'IDs inválidos' })
+                return
+            }
+
+            const entrega = await EntregaService.setEntregador(entregaIdNumber, entregadorIdNumber)
+            res.status(200).json(entrega)
+
+        } catch (error: any) {
+            console.error('Erro ao atribuir entregador:', error) // Add this for debugging
+            res.status(500).json({
+                error: 'Erro ao atribuir entregador',
+                details: error.message // Add the actual error message
+            })
+        }
+    },
+
+    async entregasDoEntregador(req: Request, res: Response): Promise<void> {
+        try {
+            const entregadorId = req.user?.id
+
+            if (!entregadorId) {
+                res.status(401).json({ error: 'Usuário não autenticado' })
+                return
+            }
+
+            const entregas = await EntregaService.readEntregasDoEntregador(entregadorId)
+            res.status(200).json(entregas)
+        } catch (error: any) {
+            console.error('Erro ao buscar entregas:', error)
+            res.status(500).json({
+                error: 'Erro ao buscar entregas do entregador',
+                details: error.message
+            })
+        }
     }
 }
 
