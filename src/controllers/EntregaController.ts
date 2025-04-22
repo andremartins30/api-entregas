@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { EntregaService } from '../services/EntregaService'
+import { VeiculoService } from '../services/VeiculoService'
 
 const EntregaController = {
     async createDelivery(req: Request, res: Response): Promise<void> {
@@ -118,7 +119,22 @@ const EntregaController = {
                 details: error.message
             })
         }
-    }
+    },
+
+
+    async countEntregasDoEntregador(req: Request, res: Response): Promise<void> {
+        const entregadorId = req.user?.id;
+        if (!entregadorId) {
+            res.status(401).json({ error: 'Usuário não autenticado' });
+            return;
+        }
+        try {
+            const count = await EntregaService.countEntregasPorEntregador(entregadorId);
+            res.status(200).json({ count });
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao contar entregas do entregador' });
+        }
+    },
 }
 
 export { EntregaController }

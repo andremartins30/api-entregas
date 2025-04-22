@@ -163,6 +163,49 @@ export const EntregaService = {
                 criadaEm: 'desc'
             }
         })
+    },
+
+    async iniciarEntrega(entregaId: number, entregadorId: number, veiculoId: number) {
+        return await prisma.entrega.update({
+            where: {
+                id: entregaId
+            },
+            data: {
+                entregadorId,
+                veiculoId,
+                status: 'EM_ANDAMENTO'
+            }
+        })
+    },
+
+    async listarEntregasComVeiculo(entregadorId: number) {
+        return await prisma.entrega.findMany({
+            where: {
+                entregadorId
+            },
+            include: {
+                veiculo: true
+            }
+        })
+    },
+
+    async getUserEntregas(usuarioId: number) {
+        return await prisma.entrega.findMany({
+            where: {
+                entregadorId: usuarioId
+            },
+            include: {
+                veiculo: true // Inclui as informações do veículo
+            }
+        });
+    },
+
+    async countEntregasPorEntregador(entregadorId: number) {
+        return await prisma.entrega.count({
+            where: {
+                entregadorId
+            }
+        })
     }
 }
 

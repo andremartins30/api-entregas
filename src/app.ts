@@ -3,6 +3,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { createServer } from 'http'
 import { routes } from './routes/index'
+import morgan from 'morgan'
+import helmet from 'helmet'
 
 dotenv.config()
 
@@ -35,6 +37,8 @@ app.use(cors({
 
 app.use(express.json())
 app.use(routes)
+app.use(morgan('dev'))
+app.use(helmet())
 
 const PORT = process.env.PORT || 3333
 httpServer.listen(PORT, () => console.log(`🚀 Server rodando na porta ${PORT}`))

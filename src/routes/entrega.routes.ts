@@ -12,7 +12,7 @@ entregaRoutes.put('/delivery/:id', ensureAuth, EntregaController.updateDelivery.
 entregaRoutes.get('/delivery', ensureAuth, EntregaController.readDelivery.bind(EntregaController))
 entregaRoutes.get('/delivery/me', ensureAuth, EntregaController.entregasDoEntregador.bind(EntregaController))
 entregaRoutes.get('/delivery/:id', ensureAuth, EntregaController.readDelivery.bind(EntregaController))
-
+entregaRoutes.get('/delivery/me/count', ensureAuth, EntregaController.countEntregasDoEntregador.bind(EntregaController))
 
 
 

@@ -44,14 +44,20 @@ model Entrega {
   entregadorId Int? // quem vai entregar
   entregador   Usuario? @relation("EntregadorEntrega", fields: [entregadorId], references: [id])
 
+  veiculoId Int? // veículo utilizado na entrega
+  veiculo   Veiculo? @relation(fields: [veiculoId], references: [id])
+
   criadaEm     DateTime @default(now())
   atualizadaEm DateTime @updatedAt
 }
 
 model Veiculo {
-  id        Int     @id @default(autoincrement())
-  placa     String  @unique
+  id        Int       @id @default(autoincrement())
+  placa     String    @unique
   modelo    String
   usuarioId Int
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
+  entregas  Entrega[]
+
+  isDeleted Boolean @default(false)
 }

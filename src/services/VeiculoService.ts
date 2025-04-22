@@ -15,14 +15,35 @@ export const VeiculoService = {
     async getUserVeiculos(usuarioId: number) {
         return await prisma.veiculo.findMany({
             where: {
-                usuarioId
+                usuarioId,
+                isDeleted: false
             }
         })
     },
 
     async getTodosVeiculos() {
         return await prisma.veiculo.findMany()
-    }
+    },
+
+    async getVeiculo(id: number) {
+        return await prisma.veiculo.findUnique({
+            where: { id }
+        });
+    },
+
+    async deletarVeiculo(id: number) {
+        return await prisma.veiculo.update({
+            where: { id },
+            data: { isDeleted: true }
+        });
+    },
+
+    async updateVeiculo(id: number, modelo: string, placa: string) {
+        return await prisma.veiculo.update({
+            where: { id },
+            data: { modelo, placa }
+        });
+    },
 }
 
 export default VeiculoService
