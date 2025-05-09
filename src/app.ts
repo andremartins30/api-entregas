@@ -10,23 +10,15 @@ dotenv.config()
 
 const app = express()
 const httpServer = createServer(app)
-const allowedOrigins = process.env.FRONTEND_URL?.split(',') || [
-    'http://localhost:3000',
-    'http://localhost:5173', // Vite default port
-];
 
 // Configuração do CORS antes de todas as rotas
 app.use(cors({
-    origin: function (origin, callback) {
-        // Permitir requisições sem origin (como apps mobile ou curl)
-        if (!origin) return callback(null, true);
-
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://webapp-entregas-j12y0hs98-andremartins30s-projects.vercel.app',
+        'https://webapp-entregas.vercel.app'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
