@@ -5,7 +5,7 @@ services:
     buildCommand: |
       npm install
       npx prisma generate
-      PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f prisma/init.sql
+      npx prisma db push --accept-data-loss
       npm run build
     startCommand: npm start
     envVars:
