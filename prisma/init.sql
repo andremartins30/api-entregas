@@ -1,11 +1,11 @@
--- Criar o tipo enum Role
+-- Create the Role enum if it doesn't exist
 DO $$ BEGIN
     CREATE TYPE "Role" AS ENUM ('GESTOR', 'ENTREGADOR');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
--- Criar a tabela Usuario
+-- Create the Usuario table if it doesn't exist
 CREATE TABLE IF NOT EXISTS "Usuario" (
     "id" SERIAL PRIMARY KEY,
     "nome" TEXT NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "Usuario" (
     "role" "Role" NOT NULL DEFAULT 'ENTREGADOR'
 );
 
--- Criar a tabela Veiculo
+-- Create the Veiculo table if it doesn't exist
 CREATE TABLE IF NOT EXISTS "Veiculo" (
     "id" SERIAL PRIMARY KEY,
     "placa" TEXT NOT NULL UNIQUE,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "Veiculo" (
     FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
--- Criar a tabela Entrega
+-- Create the Entrega table if it doesn't exist
 CREATE TABLE IF NOT EXISTS "Entrega" (
     "id" SERIAL PRIMARY KEY,
     "destino" TEXT NOT NULL,
