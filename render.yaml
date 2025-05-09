@@ -2,7 +2,12 @@ services:
   - type: web
     name: api-entregas
     env: node
-    buildCommand: npm install && npx prisma generate && npx prisma migrate deploy && npm run build
+    buildCommand: |
+      npm install
+      npx prisma generate
+      npx prisma migrate reset --force
+      npx prisma migrate deploy
+      npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
