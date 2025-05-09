@@ -12,8 +12,7 @@ const app = express()
 const httpServer = createServer(app)
 const allowedOrigins = process.env.FRONTEND_URL?.split(',') || [
     'http://localhost:3000',
-    'http://10.120.0.14:3000',
-    'http://10.120.0.14'
+    'http://localhost:5173', // Vite default port
 ];
 
 // Configuração do CORS antes de todas as rotas
@@ -25,7 +24,7 @@ app.use(cors({
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
-            callback(null, true); // Temporariamente permitindo todas as origens para debug
+            callback(new Error('Not allowed by CORS'));
         }
     },
     credentials: true,
