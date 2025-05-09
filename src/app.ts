@@ -17,6 +17,7 @@ app.use(cors({
         'http://localhost:3000',
         'http://localhost:5173',
         'https://webapp-entregas-j12y0hs98-andremartins30s-projects.vercel.app',
+        'https://webapp-entregas-p29kj96ip-andremartins30s-projects.vercel.app',
         'https://webapp-entregas.vercel.app'
     ],
     credentials: true,
