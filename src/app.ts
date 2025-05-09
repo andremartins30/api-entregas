@@ -39,5 +39,12 @@ app.use(routes)
 app.use(morgan('dev'))
 app.use(helmet())
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://webapp-entregas-8oddy00h6-andremartins30s-projects.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
 const PORT = process.env.PORT || 3333
 httpServer.listen(PORT, () => console.log(`🚀 Server rodando na porta ${PORT}`))
