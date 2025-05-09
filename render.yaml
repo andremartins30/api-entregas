@@ -5,8 +5,7 @@ services:
     buildCommand: |
       npm install
       npx prisma generate
-      npx prisma migrate reset --force
-      npx prisma migrate deploy
+      PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f prisma/init.sql
       npm run build
     startCommand: npm start
     envVars:
@@ -16,3 +15,19 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: DB_HOST
+        fromDatabase:
+          name: api-entregas-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: api-entregas-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: api-entregas-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: api-entregas-db
+          property: database
