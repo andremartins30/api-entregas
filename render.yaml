@@ -5,7 +5,7 @@ services:
     buildCommand: |
       npm install
       npx prisma generate
-      npx prisma db push --accept-data-loss
+      npx prisma db push --force-reset
       npm run build
     startCommand: npm start
     envVars:
