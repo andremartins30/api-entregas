@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { EntregaService } from '../services/EntregaService'
-import { VeiculoService } from '../services/VeiculoService'
+import path from 'path'
 
 const EntregaController = {
     async createDelivery(req: Request, res: Response): Promise<void> {
@@ -133,6 +133,49 @@ const EntregaController = {
             res.status(200).json({ count });
         } catch (error) {
             res.status(500).json({ error: 'Erro ao contar entregas do entregador' });
+        }
+    },
+
+    async uploadComprovantes(req: Request, res: Response): Promise<void> {
+        try {
+            console.log('Recebendo upload de comprovantes:', {
+                body: req.body,
+                files: req.files ? (req.files as Express.Multer.File[]).length : 0
+            });
+
+            const files = req.files as Express.Multer.File[];
+
+            if (!files || files.length === 0) {
+                res.status(400).json({ error: 'Nenhum arquivo foi enviado.' });
+                return;
+            }
+
+            if (!req.body.entregaId) {
+                res.status(400).json({ error: 'ID da entrega não fornecido.' });
+                return;
+            }
+
+            const filePaths = files.map(file => `uploads/comprovantes/${file.filename}`);
+            const entregaId = Number(req.body.entregaId);
+
+            console.log('Processando arquivos:', {
+                filePaths,
+                entregaId,
+                filesCount: files.length
+            });
+
+            await EntregaService.saveComprovantes(filePaths, entregaId);
+
+            res.status(200).json({
+                message: 'Comprovantes enviados com sucesso.',
+                files: filePaths.length
+            });
+        } catch (error) {
+            console.error('Erro ao fazer upload dos comprovantes:', error);
+            res.status(500).json({
+                error: 'Erro ao fazer upload dos comprovantes.',
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
+            });
         }
     },
 }

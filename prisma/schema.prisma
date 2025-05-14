@@ -49,6 +49,8 @@ model Entrega {
 
   criadaEm     DateTime @default(now())
   atualizadaEm DateTime @updatedAt
+
+  comprovantes Comprovante[]
 }
 
 model Veiculo {
@@ -60,4 +62,12 @@ model Veiculo {
   entregas  Entrega[]
 
   isDeleted Boolean @default(false)
+}
+
+model Comprovante {
+  id        Int      @id @default(autoincrement())
+  caminho   String
+  entregaId Int
+  entrega   Entrega  @relation(fields: [entregaId], references: [id])
+  criadoEm  DateTime @default(now())
 }

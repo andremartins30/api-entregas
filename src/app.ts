@@ -5,6 +5,7 @@ import { createServer } from 'http'
 import { routes } from './routes/index'
 import morgan from 'morgan'
 import helmet from 'helmet'
+import path from 'path'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.use(cors({
     origin: [
         'http://localhost:3000',
         'http://localhost:5173',
+        'http://10.120.0.14:8081',  // Add Expo development server
         'https://webapp-entregas-j12y0hs98-andremartins30s-projects.vercel.app',
         'https://webapp-entregas-p29kj96ip-andremartins30s-projects.vercel.app',
         'https://webapp-entregas.vercel.app'
@@ -28,6 +30,11 @@ app.use(cors({
 }))
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // Add this to handle form data
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
+
 app.use(routes)
 app.use(morgan('dev'))
 app.use(helmet())

@@ -1,6 +1,10 @@
 import { Router } from 'express'
 import { EntregaController } from '../controllers/EntregaController'
 import { ensureAuth } from '../middlewares/ensureAuth'
+import upload from '../middlewares/upload';
+import path from 'path';
+import fs from 'fs';
+import { Request, Response } from 'express';
 
 const entregaRoutes = Router()
 
@@ -14,7 +18,7 @@ entregaRoutes.get('/delivery/me', ensureAuth, EntregaController.entregasDoEntreg
 entregaRoutes.get('/delivery/:id', ensureAuth, EntregaController.readDelivery.bind(EntregaController))
 entregaRoutes.get('/delivery/me/count', ensureAuth, EntregaController.countEntregasDoEntregador.bind(EntregaController))
 
-
-
+// Endpoint para upload de imagens
+entregaRoutes.post('/upload', upload.array('photos'), EntregaController.uploadComprovantes.bind(EntregaController));
 
 export { entregaRoutes }

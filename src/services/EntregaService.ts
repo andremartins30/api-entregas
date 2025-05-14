@@ -206,6 +206,39 @@ export const EntregaService = {
                 entregadorId
             }
         })
+    },
+
+    async saveComprovantes(filePaths: string[], entregaId: number): Promise<void> {
+        try {
+            // Convert entregaId to number if it's a string
+            const entregaIdNumber = Number(entregaId);
+
+            // Check if entregaId is valid
+            if (isNaN(entregaIdNumber)) {
+                throw new Error('ID de entrega inválido');
+            }
+
+            // Verify the entrega exists
+            const entrega = await prisma.entrega.findUnique({
+                where: { id: entregaIdNumber }
+            });
+
+            if (!entrega) {
+                throw new Error('Entrega não encontrada');
+            }
+
+            for (const filePath of filePaths) {
+                await prisma.comprovante.create({
+                    data: {
+                        caminho: filePath,
+                        entregaId: entregaIdNumber,
+                    },
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao salvar comprovantes no banco de dados:', error);
+            throw new Error('Erro ao salvar comprovantes no banco de dados.');
+        }
     }
 }
 
