@@ -48,6 +48,12 @@ export const EntregaService = {
                             id: true,
                             nome: true,
                         }
+                    },
+                    comprovantes: {
+                        select: {
+                            id: true,
+                            caminho: true,
+                        }
                     }
                 }
             })
@@ -64,6 +70,12 @@ export const EntregaService = {
                     select: {
                         id: true,
                         nome: true,
+                    }
+                },
+                comprovantes: {
+                    select: {
+                        id: true,
+                        caminho: true,
                     }
                 }
             }

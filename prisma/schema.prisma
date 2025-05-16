@@ -36,6 +36,7 @@ enum Role {
 
 model Entrega {
   id        Int     @id @default(autoincrement())
+  origem    String
   destino   String
   status    String
   usuarioId Int // quem criou
